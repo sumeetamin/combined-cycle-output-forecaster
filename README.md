@@ -1,22 +1,34 @@
-# Combined Cycle Power Plant Output Forecaster
+# Combined Cycle Plant Output Forecaster
 
-A reproducible regression benchmark for estimating net hourly power output from ambient temperature, exhaust vacuum, ambient pressure, and relative humidity.
+Estimate net hourly electrical output from ambient temperature, exhaust vacuum, pressure, and humidity.
 
 ## Dataset
 
-Uses the [UCI Combined Cycle Power Plant dataset](https://archive.ics.uci.edu/dataset/294/combined%2Bcycle%2Bpower%2Bplant), a public benchmark with 9,568 observations. The target is net hourly electrical energy output. This is an observational benchmark, not a live plant feed.
+[UCI Combined Cycle Power Plant dataset](https://archive.ics.uci.edu/dataset/294/combined%2Bcycle%2Bpower%2Bplant) (dataset ID 294), 9,568 records. The source is public and is fetched by the runner; the raw dataset is not committed.
 
 ## Run
 
-Python 3.10+ is recommended.
-
 ```bash
 python -m pip install -r requirements.txt
-python main.py
+python main.py --output-dir artifacts
 ```
 
-The script fetches the dataset with `ucimlrepo`, makes a seeded 75/25 holdout, fits a median-imputed random-forest pipeline, compares it with a median predictor, and saves `artifacts/model.joblib`, `artifacts/metrics.json`, and row-aligned holdout predictions.
+The runner saves `artifacts/metrics.json`, `artifacts/holdout_predictions.csv`, and `artifacts/model.joblib`. For SMS, the UCI CC BY 4.0 archive is downloaded to the ignored `data/` cache because the repository's importer does not currently expose that dataset. The raw messages are never written to the report.
 
-## Evaluation and limits
+## Holdout results
 
-MAE, RMSE, and R² are reported beside the baseline on the holdout. The random split does not measure performance on future plant conditions or establish operational safety. Validate on time-separated plant data, monitor sensor/data drift, and review process constraints before deployment. No performance numbers are claimed until the run is reproduced.
+A random 75/25 split (seed 42) is used. Numeric inputs are median-imputed; a 400-tree random-forest regressor is compared with a median predictor. random 75/25 holdout; seed=42.
+
+| Target | MAE | RMSE | R² | Median baseline MAE |
+|---|---:|---:|---:|---:|
+| PE | 2.367 | 3.341 | 0.962 | 14.728 |
+
+Full aggregate metrics and the exact split seed are in [`reports/benchmark.json`](reports/benchmark.json).
+
+## Limits
+
+This is an observational public benchmark. The random holdout does not establish future-condition or operational performance. These are one-time benchmark results, not service-level, production, or causal claims.
+
+## Reproducibility
+
+The model and split use seed 42. Re-running downloads source data from UCI and regenerates local artifacts. Model binaries, raw inputs, and row-level predictions are excluded from this public repository.
