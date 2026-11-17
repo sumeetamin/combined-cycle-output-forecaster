@@ -1,0 +1,30 @@
+{
+  "project": "Combined Cycle Plant Output Forecaster",
+  "dataset_id": 294,
+  "rows": 9568,
+  "features": [
+    "AT",
+    "V",
+    "AP",
+    "RH"
+  ],
+  "targets": [
+    "PE"
+  ],
+  "split": "random 75/25 holdout; seed=42",
+  "task": "regression",
+  "holdout": {
+    "PE": {
+      "mae": 2.366950008382055,
+      "rmse": 3.341209184814322,
+      "r2": 0.9615947706521809,
+      "median_baseline_mae": 14.72800585284281
+    }
+  },
+  "limitations": "Public benchmark; holdout results do not establish production performance.",
+  "source_url": "https://archive.ics.uci.edu/dataset/294",
+  "generated_at": "2026-11-17",
+  "artifacts_published": [
+    "reports/benchmark.json"
+  ]
+}
