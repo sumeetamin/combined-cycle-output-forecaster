@@ -13,11 +13,11 @@ python -m pip install -r requirements.txt
 python main.py --output-dir artifacts
 ```
 
-The runner saves `artifacts/metrics.json`, `artifacts/holdout_predictions.csv`, and `artifacts/model.joblib`. For SMS, the UCI CC BY 4.0 archive is downloaded to the ignored `data/` cache because the repository's importer does not currently expose that dataset. The raw messages are never written to the report.
+The runner saves metrics, holdout predictions, and a reusable model in the ignored output directory. The public [`reports/benchmark.json`](reports/benchmark.json) contains aggregate results only; no row-level records are published.
 
 ## Holdout results
 
-A random 75/25 split (seed 42) is used. Numeric inputs are median-imputed; a 400-tree random-forest regressor is compared with a median predictor. random 75/25 holdout; seed=42.
+A random 75/25 split (seed 42) is used. Numeric inputs are median-imputed; a 400-tree random-forest regressor is compared with a median predictor.
 
 | Target | MAE | RMSE | R² | Median baseline MAE |
 |---|---:|---:|---:|---:|
